@@ -1,0 +1,250 @@
+<html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+        integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="estilos.css">
+    <link rel="shortcut icon" href="img/logo1.png">
+
+    <title>Geo-EC-Maps</title>
+</head>
+
+<body>
+    <!-- MENU ENCABEZADO -->
+    <div class="contenedor-header">
+        <header>
+            <a href="index.html"> <img src="img/logo1.jpg" width="100%" height="70"  /></a>
+            <nav id="nav">
+                <ul>
+                    <li><a href="#informacion" onclick="seleccionar()">INFORMACIÓN</a></li>
+                    <li><a href="#mapas_disponibles" onclick="seleccionar()">MAPAS DISPONIBLES</a></li>
+                    <li><a href="#descargar" onclick="seleccionar()">DESCARGAR PROYECTO</a></li>
+                </ul>
+            </nav>
+            <div class="nav-responsive" onclick="mostrarOcultarMenu()">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </header>
+    </div>
+
+    <!-- SECCION INFORMACION -->
+    <section id="informacion" class="informacion">
+        <div class="contenido-seccion">
+            <br><br><br>
+
+            <center>
+                <div class="contenedor-img">
+                    <br>
+                    <img src="img/logo2.jpg" alt="">
+                    <br><br><br>
+                </div>
+                <br><br>
+                <h3>¿Qué puede realizar aquí?</h3>
+            </center>
+            <br><br>
+
+            <p> Geo-EC-Maps, nace de la necesidad de brindarle a la comunidad ecuatoriana una alternativa de software
+                libre que les permita realizar la configuración de mapas que pueden ser implementados
+                dentro de diferentes e-commerce de forma gratuita. Una de las principales características de este
+                proyecto es que al ser de código abierto el usuario tiene la oportunidad de descargar el mapa
+                en el cual ha trabajado y colocarlo de manera libre en su negocio digital.
+            </p>
+
+
+            <div class="fila">
+
+                <!-- tecnologias -->
+                <div class="col">
+                    <br><br>
+                    <h3>Tecnologías Utilizadas</h3>
+                    <p>Geo-EC-Maps hace uso de las siguientes tecnologías: </p>
+                    <div class="contenedor-tecnologias">
+
+                        <div class="tecnologias">
+                            <i class="fa-brands fa-square-js"></i>
+                            <h4>JavaScript</h4>
+                        </div>
+                        <div class="tecnologias">
+                            <i class="fa-brands fa-html5"></i>
+                            <h4>HTML 5</h4>
+                        </div>
+                        <div class="tecnologias">
+                            <i class="fa fa-leaf"></i>
+                            <h4>Leaflet</h4>
+                        </div>
+                        <div class="tecnologias">
+                            <i class="fa fa-map"></i>
+                            <h4>OpenStreetMap</h4>
+                        </div>
+                        <div class="tecnologias">
+                            <i class="fa fa-file"></i>
+                            <h4>GeoJSON</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- SECCION MAPAS -->
+    <section id="mapas_disponibles" class="mapas_disponibles">
+        <div class="contenido-seccion">
+            <h2>Mapas Disponibles</h2>
+            <br>
+            <p>Puede trabajar en la personalización de los siguientes mapas: </p>
+            <br>
+            <div class="galeria">
+
+                <div class="proyecto">
+                    <img src="img/mapa_general.jpg" alt="">
+                    <div class="overlay">
+                        <h3>Mapa General</h3>
+                        <p1>Todas Las Funcionalidades</p1>
+                        <main>
+                            <div class="info-content">
+                                <br>
+                                <a href="mapa_general.html" target="_blank">
+                                    <button class="mapas_disponibles">
+                                        <i class="fa fa-map"></i> Ir Al Mapa
+                                    </button>
+                                </a>
+                            </div>
+                        </main>
+                    </div>
+                </div>
+
+                <div class="proyecto">
+                    <img src="img/mapa_1.jpg" alt="">
+                    <div class="overlay">
+                        <h3>Mapa 1</h3>
+                        <p1>Puntos,Polígonos y Círculos</p1>
+                        <main>
+                            <div class="info-content">
+                                <br>
+                                <a href="mapa_1.html" target="_blank">
+                                    <button class="mapas_disponibles">
+                                        <i class="fa fa-map"></i> Ir Al Mapa
+                                    </button>
+                                </a>
+                            </div>
+                        </main>
+                    </div>
+                </div>
+
+                <div class="proyecto">
+                    <img src="img/mapa_2.jpg" alt="">
+                    <div class="overlay">
+                        <h3>Mapa 2</h3>
+                        <p1>Generación De Rutas</p1>
+                        <main>
+                            <div class="info-content">
+                                <br>
+                                <a href="mapa_2.html" target="_blank">
+                                    <button class="mapas_disponibles">
+                                        <i class="fa fa-map"></i> Ir Al Mapa
+                                    </button>
+                                </a>
+                            </div>
+                        </main>
+                    </div>
+                </div>
+
+                <div class="proyecto">
+                    <img src="img/mapa_3.jpg" alt="">
+                    <div class="overlay">
+                        <h3>Mapa 3</h3>
+                        <p1>Trabaja con Archivos GeoJSON</p1>
+                        <main>
+                            <div class="info-content">
+                                <br>
+                                <a href="mapa_3.html" target="_blank">
+                                    <button class="mapas_disponibles">
+                                        <i class="fa fa-map"></i> Ir Al Mapa
+                                    </button>
+                                </a>
+                            </div>
+                        </main>
+                    </div>
+                </div>
+
+                <div class="proyecto">
+                    <img src="img/mapa_4.jpg" alt="">
+                    <div class="overlay">
+                        <h3>Mapa 4</h3>
+                        <p1>Permite Implementar Buscador De Puntos</p1>
+                        <main>
+                            <div class="info-content">
+                                <br>
+                                <a href="mapa_4.html" target="_blank">
+                                    <button class="mapas_disponibles">
+                                        <i class="fa fa-map"></i> Ir Al Mapa
+                                    </button>
+                                </a>
+                            </div>
+                        </main>
+                    </div>
+                </div>
+
+                <div class="proyecto">
+                    <img src="img/mapa_5.jpg" alt="">
+                    <div class="overlay">
+                        <h3>Mapa 5</h3>
+                        <p1>Permite Trabajar con Zonas De Calor</p1>
+                        <main>
+                            <div class="info-content">
+                                <br>
+                                <a href="mapa_5.html" target="_blank">
+                                    <button class="mapas_disponibles">
+                                        <i class="fa fa-map"></i> Ir Al Mapa
+                                    </button>
+                                </a>
+                            </div>
+                        </main>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCION DESCARGAR -->
+    <section id="descargar" class="descargar">
+        <div class="contenido-seccion">
+            <h2>Descargar Proyecto</h2>
+            <br>
+            <p>Al ser un proyecto con filosofía de acceso libre, puede descargar el código del proyecto en las siguientes opciones: </p>
+            <br>
+            <section class="redes-sociales">
+                <div class="contenedor">
+                    <a class="github" href="https://github.com/Jean152j" target="_blank"><i class="fa-brands fa-github"></i></a>
+                </div>
+            </section>
+        </div>
+    </section>
+
+    <!-- footer -->
+    <footer>
+        <a href="#informacion" class="arriba">
+            <i class="fa-solid fa-angles-up"></i>
+        </a>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
+
+</html>
+
+
+<center>
+    <a href="mapa_estatico.html"><button class="boton1">Crear Mapas Estáticos</button></a>
+    <a href="mapa_dinamico.html"><button class="boton2">Crear Mapas Dinamicos</button></a>
+    <a href="mapas_revisados.html"><button class="boton3">Mapas Revisados</button></a>
+    <a href="mapas_parametros.html"><button class="boton4">Mapas Parametros</button></a>
+</center>

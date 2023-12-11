@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa 1</title>
+    <!-- 1. Archivo CSS de Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.7/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="/include/fontawesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+    
+
+    <!-- 4. Agregar Archivo CSS  -->
+    <link rel="stylesheet" type="text/css" href="estilos.css">
+
+    
+    
+</head>
+<body>
+    <!-- 3. Div Mapa -->
+    <h1>Mapa Puntos Polígonos y Círculos</h1>
+    <div id="mi_mapa10"></div>
+    <div>
+        <label for="mapStyle">Estilo del mapa:</label>
+        <select id="mapStyle">
+          <option value="estandar">Estándar</option>
+          <option value="satelite">Satélite</option>
+          <option value="transporte">Transporte</option>
+          <option value="ciclista">Ciclista</option>
+          <option value="humanitario">Humanitario</option>
+        </select>
+    </div>
+    <button id="descargar-geojson">Descargar GeoJSON</button>
+
+    <button onclick="calcularRuta()">Calcular Ruta</button>
+
+
+
+    
+   <!--  <div>
+        <p>Haz clic en el mapa para seleccionar dos puntos:</p>
+        <p>Punto 1: Latitud: <span id="lat1"></span>, Longitud: <span id="lon1"></span></p>
+        <p>Punto 2: Latitud: <span id="lat2"></span>, Longitud: <span id="lon2"></span></p>
+    </div> 
+    
+    
+    
+
+        Formulario para ingresar ubicación 
+    <form id="ubicacionForm">
+        <label for="latitud">Latitud:</label>
+        <input type="text" id="latitud" name="latitud" required><br>
+        <label for="longitud">Longitud:</label>
+        <input type="text" id="longitud" name="longitud" required><br>
+        <a href="mapas_revisados.html"><button type="submit">Ir a Ubicación</button></a>
+    </form> -->
+    
+
+    <!-- 2. Archivo JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.7/dist/sweetalert2.min.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/i18n/es.js"></script>
+    <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+    
+
+
+    <!-- 5. Agregar Archivo JavaScript -->
+    <script src="mapas_parametros.js"></script>
+   
+
+    
+</body>
+</html>
