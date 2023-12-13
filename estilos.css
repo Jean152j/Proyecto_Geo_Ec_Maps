@@ -83,7 +83,8 @@ html {
 
 /* Estilo para los botones */
 .contenedor-header button:hover {
-    background-color: #2f8530;
+    background-color: #ffffff;
+    color: #000000;
 }
 
 .nav-responsive {
@@ -883,7 +884,7 @@ button {
 /* Mapa Estilo */
 #mapa_general {
     margin: auto;
-    height: 60vh; /* 60% del alto de la ventana */
+    height: 73vh; /* 60% del alto de la ventana */
     width: 100%; /* 90% del ancho del contenedor padre */
     max-width: 1100px; /* Máximo ancho permitido */
     position: relative;

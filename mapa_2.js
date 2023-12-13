@@ -1015,7 +1015,7 @@ function descargarGeoJSON() {
         Swal.fire({
             icon: 'warning',
             title: 'Aviso',
-            text: 'Para descargar un archivo, debes agregar al menos un punto o una figura al mapa.',
+            text: 'Para descargar un archivo, debes agregar al menos un punto al mapa.',
         });
         return;
     }
@@ -1095,7 +1095,7 @@ function limpiarMapa() {
         Swal.fire({
             icon: 'info',
             title: 'Nada que limpiar',
-            text: 'No hay puntos, rutas ni figuras agregadas en el mapa.'
+            text: 'No hay puntos ni rutas agregadas en el mapa.'
         });
 
         // Llama a la función para limpiar la tabla de información de puntos
@@ -1124,7 +1124,7 @@ function limpiarMapa() {
     Swal.fire({
         icon: 'success',
         title: 'Mapa limpiado',
-        text: 'Los puntos, rutas y figuras han sido limpiados del mapa y se descargó el GeoJSON.'
+        text: 'Los puntos y rutas han sido limpiados del mapa y se descargó el GeoJSON.'
     });
 }
 
@@ -1276,18 +1276,9 @@ function mostrarMensaje(mensaje) {
 
 // Variables globales
 var todosLosPuntos = new L.FeatureGroup();
-var todasLasFiguras = L.layerGroup();
 var capasExistentes = [];
-var puntosCalientes = [];
-var heatLayer;
-var geojsonData = {
-    features: []
-};
 
-document.getElementById('cargarArchivoBtn').addEventListener('click', function () {
-    // Simular un clic en el elemento de entrada de archivos
-    document.getElementById('fileInput').click();
-});
+
 
 
 // Función para procesar el GeoJSON
@@ -1303,25 +1294,19 @@ function procesarGeoJSON(contenidoArchivo) {
 
     // Limpiar todos los puntos existentes
     todosLosPuntos.clearLayers();
-    todasLasFiguras.clearLayers();
-    puntosCalientes = [];
 
     // Verificar si hay un layer en el JSON y cambiar el layer del mapa si es necesario
     if (nuevoGeoJSON.features.length > 0 && nuevoGeoJSON.features[0].properties && nuevoGeoJSON.features[0].properties.layer) {
         cambiarLayerMapa(nuevoGeoJSON.features[0].properties.layer);
     }
 
-    // Iterar sobre los features en el nuevo GeoJSON y agregar puntos, zonas calientes y otras figuras al mapa
+    // Iterar sobre los features en el nuevo GeoJSON y agregar puntos
     nuevoGeoJSON.features.forEach(function (feature) {
         try {
             // Verificar y procesar las coordenadas según el tipo de geometría
             if (feature.geometry.type === 'Point') {
                 agregarPuntoAlMapa(feature);
-            } else if (feature.geometry.type === 'LineString' || feature.geometry.type === 'Polygon') {
-                agregarPolilineaOPolygonAlMapa(feature);
-            } else if (feature.geometry.type === 'Circle') {
-                agregarPuntoCalienteGeoJSON();
-            }
+            } 
             // Puedes agregar más bloques para otros tipos de figuras (Rectangle, Marker, etc.)
         } catch (error) {
             console.error('Error al procesar feature:', error.message);
@@ -1329,23 +1314,9 @@ function procesarGeoJSON(contenidoArchivo) {
         }
     });
 
-    // Agregar todos los puntos y zonas calientes al mapa
+    // Agregar todos los puntos al mapa 
     map.addLayer(todosLosPuntos);
-    map.addLayer(todasLasFiguras);
-
-    // Verificar si hay puntos calientes para agregar la capa de calor
-    if (puntosCalientes.length > 0) {
-        if (heatLayer) {
-            heatLayer.setLatLngs(puntosCalientes).addTo(map);
-        } else {
-            heatLayer = L.heatLayer(puntosCalientes, {
-                radius: 25,
-                minOpacity: 0.4,
-                gradient: { 0.4: 'blue', 0.65: 'lime', 1: 'red' }
-            }).addTo(map);
-        }
-    }
-
+   
     // Puedes también recalcular las rutas si es necesario
     calcularRuta();
 
@@ -1363,6 +1334,13 @@ function featureExistente(nuevaFeature) {
         return existente.properties.nombre === nuevaFeature.properties.nombre;
     });
 }
+
+
+
+document.getElementById('cargarArchivoBtn').addEventListener('click', function () {
+    // Simular un clic en el elemento de entrada de archivos
+    document.getElementById('fileInput').click();
+});
 
 // Evento de cambio en el input de archivos
 document.getElementById('fileInput').addEventListener('change', function () {
@@ -1413,32 +1391,6 @@ document.getElementById('fileInput').addEventListener('change', function () {
 });
 
 
-function habilitarEdicionEnFigura(figura) {
-    // Agregar evento de clic para editar o eliminar la figura
-    figura.on('click', function (event) {
-        // Habilitar edición para la figura
-        figura.editing.enable();
-
-        // Puedes agregar eventos adicionales o lógica según tus necesidades
-        figura.on('editable:editing', function () {
-            console.log('Editando figura...');
-        });
-
-        figura.on('editable:drawing:commit', function () {
-            console.log('Edición completada.');
-        });
-
-        figura.on('editable:vertex:click', function (e) {
-            // Acciones cuando se hace clic en un vértice de la figura (opcional)
-        });
-
-        figura.on('editable:delete', function () {
-            // Acciones al eliminar la figura
-            console.log('Figura eliminada.');
-            todasLasFiguras.removeLayer(figura);
-        });
-    });
-}
 
 function agregarPuntoAlMapa(feature) {
     // Verificar si las coordenadas están presentes y son válidas
@@ -1467,192 +1419,6 @@ function agregarPuntoAlMapa(feature) {
     }
 }
 
-function agregarPolilineaOPolygonAlMapa(feature) {
-    console.log('Entrando en agregarPolilineaOPolygonAlMapa:', feature);
-
-    // Verificar si las coordenadas están presentes y son válidas
-    if (
-        feature.geometry.coordinates &&
-        Array.isArray(feature.geometry.coordinates)
-    ) {
-        // Obtener las coordenadas directamente
-        const coords = feature.geometry.coordinates.map(coord => {
-            if (Array.isArray(coord) && coord.length === 2) {
-                return [coord[1], coord[0]];
-            }
-            return null;
-        });
-
-        // Filtrar coordenadas que no sean válidas
-        const validCoords = coords.filter(coord => coord !== null);
-
-        // Verificar si hay coordenadas válidas
-        if (validCoords.length > 0) {
-            try {
-
-                // Verificar el tipo de figura y agregar al mapa
-                if (feature.geometry.type === 'LineString') {
-                    console.log('Agregando polilínea al mapa:', validCoords);
-
-                    // Agregar polilínea
-                    var polyline = L.polyline(validCoords, {
-                        color: feature.properties.colorBorde || 'red',
-                        weight: feature.properties.anchoBorde || 3,
-                        // ... (otras propiedades)
-                    }).addTo(todasLasFiguras);
-
-                    // Puedes agregar eventos u otras configuraciones específicas para polilíneas
-                } else if (feature.geometry.type === 'Polygon') {
-                    console.log('Agregando polígono al mapa:', validCoords);
-                    // Agregar polígono
-                    var polygon = L.polygon(validCoords, {
-                        color: feature.properties.colorBorde || 'blue',
-                        fillColor: feature.properties.colorRelleno || 'lightblue',
-                        weight: feature.properties.anchoBorde || 3,
-                        // ... (otras propiedades)
-                    }).addTo(todasLasFiguras);
-
-                    // Puedes agregar eventos u otras configuraciones específicas para polígonos
-                }
-
-            } catch (error) {
-                console.error('Error al agregar figura al mapa:', error);
-            }
-
-        } else {
-            console.warn('Coordenadas filtradas, ninguna válida en el feature:', feature);
-        }
-    } else {
-        console.warn('Coordenadas no válidas en el feature:', feature);
-    }
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-
-    var heatLayer;
-    var puntosCalientes = [];
-
-    document.getElementById('agregarZonaCaliente').addEventListener('click', function () {
-        mostrarInstruccionesAgregarZonaCaliente();
-    });
-
-    function mostrarInstruccionesAgregarZonaCaliente() {
-        Swal.fire({
-            title: 'Instrucciones para Zona de Calor',
-            text: 'Haz clic en el mapa para definir la posición de la zona de calor.',
-            confirmButtonText: 'Ok',
-            allowOutsideClick: false
-        }).then(() => {
-            // Cuando el usuario hace clic en OK, escucha el evento click en el mapa
-            map.once('click', function (event) {
-                mostrarDialogoAgregarZonaCaliente(event.latlng);
-            });
-        });
-    }
-    function mostrarDialogoAgregarZonaCaliente(latlng) {
-        Swal.fire({
-            title: 'Agregar Zona De Calor',
-            html:
-                '<input id="nombre" class="swal2-input" placeholder="Nombre de la zona">' +
-                '<input id="descripcion" class="swal2-input" placeholder="Descripción de la zona">' +
-                '<label for="intensidad">Intensidad:</label>' +
-                '<select id="intensidad" class="swal2-select">' +
-                '<option value="0.1">Baja</option>' +
-                '<option value="0.5">Media</option>' +
-                '<option value="1.0">Alta</option>' +
-                '</select>',
-            confirmButtonText: 'Agregar',
-            showCancelButton: true,
-            preConfirm: () => {
-                const nombre = Swal.getPopup().querySelector('#nombre').value;
-                const descripcion = Swal.getPopup().querySelector('#descripcion').value;
-                const intensidad = Swal.getPopup().querySelector('#intensidad').value;
-
-                if (!nombre || !descripcion || !intensidad) {
-                    Swal.showValidationMessage('Por favor, complete los campos de Nombre y Descripción de la zona.');
-                }
-
-                return { nombre, descripcion, intensidad: parseFloat(intensidad) };
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                agregarZonaCaliente(latlng, result.value.nombre, result.value.descripcion, result.value.intensidad);
-                Swal.fire('Éxito', 'Zona de Calor agregada correctamente.', 'success');
-            }
-        });
-    }
-
-    function agregarZonaCaliente(latlng, nombre, descripcion, intensidad) {
-        const puntoCaliente = [latlng.lat, latlng.lng, intensidad];
-        puntosCalientes.push(puntoCaliente);
-
-        if (heatLayer) {
-            heatLayer.setLatLngs(puntosCalientes).addTo(map);
-        } else {
-            heatLayer = L.heatLayer(puntosCalientes, {
-                radius: 25,
-                minOpacity: 0.4,
-                gradient: { 0.4: 'blue', 0.65: 'lime', 1: 'red' }
-            }).addTo(map);
-        }
-
-        agregarPuntoCalienteGeoJSON(latlng, nombre, descripcion, intensidad);
-    }
-});
-
-function agregarPuntoCalienteGeoJSON(latlng, nombre, descripcion, intensidad) {
-    // Verificar si la información del punto es válida
-    if (latlng && nombre && descripcion) {
-        var puntoFeature = {
-            "type": "Feature",
-            "properties": {
-                "nombre": nombre,
-                "descripcion": descripcion,
-                "intensidad": intensidad
-            },
-            "geometry": {
-                "coordinates": [latlng.lng, latlng.lat],
-                "type": "Circle"
-            }
-        };
-
-        geojsonData.features.push(puntoFeature);
-    } else {
-
-    }
-}
-
-geoJson2heat = function (geojson) {
-    return geojson.features
-        .filter(function (feature) {
-            // Filtrar solo los features de tipo "Circle"
-            return feature.geometry.type === "Circle";
-        })
-        .map(function (feature) {
-            return [parseFloat(feature.geometry.coordinates[1]), parseFloat(feature.geometry.coordinates[0])];
-        });
-};
-
-
-document.getElementById("fileInput").addEventListener("change", function (evt) {
-    var file = evt.target.files[0], // Read only first file.
-        reader = new FileReader();
-
-    reader.onload = function (e) {
-        var fileText = e.target.result,
-            fileData = JSON.parse(fileText);
-        var geoData = geoJson2heat(fileData, 1);
-        var heatMap = new L.heatLayer(geoData, {
-            radius: 25,
-            minOpacity: 0.4,
-            gradient: { 0.4: 'blue', 0.65: 'lime', 1: 'red' }
-        }).addTo(map);
-        // group = L.geoJSON(fileData).addTo(map);
-        // map.fitBounds(heatMap.getBounds());
-    }
-
-    reader.readAsText(file);
-});
 
 // Define la función obtenerURLMapa con lógica personalizada para obtener el URL del mapa según el nombre de la capa
 function obtenerURLMapa(estilo) {

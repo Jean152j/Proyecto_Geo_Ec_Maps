@@ -81,6 +81,7 @@
     <section id="desplegar_mapa" class="desplegar_mapa">
         <div class="contenido-seccion">
             <button id="cargarArchivoBtn">Cargar Archivo</button>
+            <input type="file" id="fileInput" accept=".json" style="display: none;">
 
             <button id="descargarJson" onclick="descargarGeoJSON()">Descargar JSON</button>
 
@@ -88,7 +89,6 @@
 
             <button id="limpiarRutaBtn">Limpiar Ruta</button>
 
-            <input type="file" id="fileInput" accept=".json" style="display: none;">
             <button id="agregarFiguraBtn" onclick="agregarFiguras()">Agregar Figuras</button>
 
             <button id="agregarZonaCaliente">Agregar Zona De Calor</button>
@@ -100,7 +100,7 @@
             <div class="contenedor-mapa">
                 <div id="mapa_general"></div>
             </div>
-            
+
             <br>
             <div>
                 <label for="mapStyle" class="desplegar_mapa1">Estilo del mapa:</label>
