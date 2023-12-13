@@ -1,4 +1,4 @@
-//1. Se inicializa el mapa escogiendo coordenadas y nivel de zoom (15), mientras más sea el número más zoom se le da 
+//Se inicializa el mapa escogiendo coordenadas y nivel de zoom, mientras mayor sea el número más zoom se le da 
 
 let map = L.map('mapa_general', {
     zoomControl: false, // Desactiva el control de zoom predeterminado
@@ -13,7 +13,7 @@ L.control.zoom({
 map.addLayer(drawnItems);
 
 
-//2.Se crea capa para mostrar el mapa
+// Se crea capa para mostrar el mapa
 
 var tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -55,8 +55,8 @@ geocoder.on('markgeocode', function (event) {
 // Crear un control de geolocalización con opciones personalizadas
 var locateControl = L.control.locate({
     position: 'topright', // Posición del control
-    drawMarker: true, // No dibujar el marcador al encontrar la ubicación
-    showPopup: true, // No mostrar un mensaje emergente cuando se encuentra la ubicación
+    drawMarker: true, // dibujar el marcador al encontrar la ubicación
+    showPopup: true, // mostrar un mensaje emergente cuando se encuentra la ubicación
     locateOptions: {
         enableHighAccuracy: true, // Mejor precisión, si está disponible
     },
@@ -797,12 +797,7 @@ function actualizarMarcador(marcador, puntoGeoJSON) {
             iconSize: [40, 40],
         }));
 
-        // Actualizar las imágenes asociadas al marcador
-        // Puedes agregar aquí la lógica para manejar las imágenes según tus necesidades
-        // Por ejemplo, puedes actualizar una galería de imágenes en el popup del marcador.
-
-        // Si necesitas procesar las imágenes de alguna manera, puedes hacerlo aquí.
-        // Para este ejemplo, se abrirá un modal con las imágenes ampliadas al hacer clic en el marcador.
+        
 
     } else {
         console.error("El puntoGeoJSON o sus propiedades son indefinidos.", puntoGeoJSON);
@@ -1356,7 +1351,7 @@ function obtenerTipoGeometry(figuraLayer) {
     } else if (figuraLayer instanceof L.Polygon) {
         return "Polygon";
     } else if (figuraLayer instanceof L.Rectangle) {
-        return "Polygon"; // Cambia a "Rectangle" si lo prefieres
+        return "Polygon"; 
     } else {
         // Manejar caso cuando el tipo de figura no es reconocido
         return "desconocido";
@@ -1398,11 +1393,6 @@ function eliminarFigura(figuraLayer) {
 }
 
 function eliminarFiguraGeoJSON(figuraLayer) {
-    // Verificar si figuraLayer es null o undefined
-    /*if (!figuraLayer || !figuraLayer.feature || !figuraLayer.feature.properties) {
-        console.error('Objeto figuraLayer no válido:', figuraLayer);
-        return;
-    }*/
 
     // Verificar si la capa tiene un nombre en sus propiedades
     const nombreFigura = figuraLayer.options.nombre;
@@ -1449,10 +1439,6 @@ function descargarGeoJSON() {
     var geoJSONContenido = JSON.stringify(geojsonData);
     descargarArchivo(geoJSONContenido, 'mapa_personalizado.json');
 
-    // Vuelve a agregar los puntos desde el GeoJSON actualizado
-    /*geojsonData.features.forEach(function (feature) {
-        agregarPuntoGeoJSON(feature);
-    });*/
 }
 
 // Función para descargar el GeoJSON actualizado
@@ -2074,8 +2060,6 @@ document.getElementById("fileInput").addEventListener("change", function (evt) {
             minOpacity: 0.4,
             gradient: { 0.4: 'blue', 0.65: 'lime', 1: 'red' }
         }).addTo(map);
-        // group = L.geoJSON(fileData).addTo(map);
-        // map.fitBounds(heatMap.getBounds());
     }
 
     reader.readAsText(file);

@@ -81,7 +81,7 @@ html {
     cursor: pointer;
 }
 
-/* Estilo para los botones */
+/* Estilo para el boton */
 .contenedor-header button:hover {
     background-color: #ffffff;
     color: #000000;
@@ -97,40 +97,6 @@ html {
 }
 
 /* SECCION I N I C I O */
-.inicio {
-    background: linear-gradient(to top, rgba(30, 35, 38, .8), rgb(19, 132, 197)),
-    ;
-    background-size: cover;
-    height: 100vh;
-    color: #fff;
-    display: flex;
-    align-items: center;
-}
-
-.inicio .contenido-banner {
-    padding: 20px;
-    background-color: #00a2ff;
-    max-width: 350px;
-    margin: auto;
-    text-align: center;
-    border-radius: 4px;
-}
-
-.inicio .contenido-banner img {
-    margin-top: 40px;
-    border: 10px solid #076b89;
-    display: block;
-    width: 80%;
-    margin: auto;
-    border-radius: 100%;
-    text-align: center;
-}
-
-.inicio .contenido-banner h2 {
-    font-size: 15px;
-    font-weight: normal;
-}
-
 .contenido-banner .redes a {
     color: #fff;
     display: inline-block;
@@ -143,10 +109,6 @@ html {
     margin: 40px 5px;
     font-size: 20px;
     transition: .3s;
-}
-
-.inicio .contenido-banner .redes a:hover {
-    background-color: #16b4e4;
 }
 
 .main {
@@ -581,115 +543,9 @@ footer .arriba {
     border-radius: 3px;
 }
 
-.redes-sociales .contenedor .facebook:hover {
-    background: #3b5998;
-}
-
-.redes-sociales .contenedor .linkedin:hover {
-    background: #3b5998;
-}
-
-.redes-sociales .contenedor .youtube:hover {
-    background: #cd201f;
-}
 
 .redes-sociales .contenedor .github:hover {
     background: #666666;
-}
-
-.redes-sociales .contenedor .instagram:hover {
-    background: #f172c2;
-}
-
-/* SECCION RESPONSIVE */
-@media screen and (max-width:980px) {
-    nav {
-        display: none;
-    }
-
-    .nav-responsive {
-        display: block;
-    }
-
-    nav.responsive {
-        display: block;
-        position: absolute;
-        right: 0;
-        top: 75px;
-        background-color: #252A2E;
-        width: 180px;
-    }
-
-    nav.responsive ul {
-        display: block !important;
-    }
-
-    nav.responsive ul li {
-        border-bottom: 1px solid #fff;
-        padding: 10px 0;
-    }
-}
-
-@media screen and (max-width:700px) {
-    .informacion .fila {
-        display: block;
-    }
-
-    .informacion .fila .col {
-        width: fit-content;
-    }
-
-    .skills .fila {
-        display: block;
-    }
-
-    .skills .fila .col {
-        width: 100%;
-    }
-
-    .skills .fila .col .barra-skill {
-        width: 100%;
-    }
-
-    .curriculum .fila {
-        display: block;
-    }
-
-    .curriculum .fila .col {
-        width: 90%;
-    }
-
-    .curriculum .fila .derecha {
-        margin-left: 20px;
-    }
-
-    .desplegar_mapa {
-        display: block;
-        width: 100%;
-    }
-
-    
-
-    .mapas_disponibles .galeria {
-        display: block;
-        width: 100%;
-    }
-
-    .mapas_disponibles .galeria .proyecto {
-        max-width: 100%;
-    }
-
-    .mapas_disponibles .galeria .proyecto img {
-        width: 100%;
-    }
-
-    .descargar .fila {
-        display: block;
-    }
-
-    .descargar .fila .col {
-        width: 100%;
-    }
 }
 
 /* Estilo de la tabla */
@@ -747,59 +603,59 @@ button {
 
 /* Estilo específico para el botón de cargar archivo */
 #cargarArchivoBtn:hover {
-    background-color: #1a64aa; /* Color de fondo verde */
-    color: white; /* Color del texto blanco */
+    background-color: #1a64aa; /* Color de fondo */
+    color: white; /* Color del texto */
 }
 
 
 
 /* Estilo específico para el botón de descargar JSON */
 #descargarJson:hover {
-    background-color: #1a64aa; /* Color de fondo verde */
-    color: white; /* Color del texto blanco */
+    background-color: #1a64aa; /* Color de fondo  */
+    color: white; /* Color del texto  */
 }
 
 
 
 /* Estilo específico para el botón de calcular ruta */
 #calcularRutaBtn:hover {
-    background-color: #1a64aa; /* Color de fondo verde */
-    color: white; /* Color del texto blanco */
+    background-color: #1a64aa; /* Color de fondo  */
+    color: white; /* Color del texto  */
 }
 
 
 
-/* Estilo específico para el botón de calcular ruta */
+/* Estilo específico para el botón de limpiar ruta */
 #limpiarRutaBtn:hover {
-    background-color: #1a64aa; /* Color de fondo verde */
-    color: white; /* Color del texto blanco */
+    background-color: #1a64aa; /* Color de fondo  */
+    color: white; /* Color del texto */
 }
 
 
 
-/* Estilo específico para el botón de calcular ruta */
+/* Estilo específico para el botón de agregar figura */
 #agregarFiguraBtn:hover {
-    background-color: #1a64aa; /* Color de fondo verde */
-    color: white; /* Color del texto blanco */
+    background-color: #1a64aa; /* Color de fondo  */
+    color: white; /* Color del texto  */
 }
 
 
-/* Estilo específico para el botón de calcular ruta */
+/* Estilo específico para el botón de agregar zona de calor */
 #agregarZonaCaliente:hover {
-    background-color: #1a64aa; /* Color de fondo verde */
-    color: white; /* Color del texto blanco */
+    background-color: #1a64aa; /* Color de fondo  */
+    color: white; /* Color del texto  */
 }
 
-/* Estilo específico para el botón de calcular ruta */
+/* Estilo específico para el botón de ver informacion */
 #botonVerInformacion:hover {
-    background-color: #1a64aa; /* Color de fondo verde */
-    color: white; /* Color del texto blanco */
+    background-color: #1a64aa; /* Color de fondo */
+    color: white; /* Color del texto  */
 }
 
-/* Estilo específico para el botón de calcular ruta */
+/* Estilo específico para el botón de limpiar mapa */
 #boton-limpiar-mapa:hover {
-    background-color: #1a64aa; /* Color de fondo verde */
-    color: white; /* Color del texto blanco */
+    background-color: #1a64aa; /* Color de fondo  */
+    color: white; /* Color del texto */
 }
 
 /* Estilo para el select con esquinas redondeadas */
@@ -807,78 +663,6 @@ button {
     font-size: 14px; /* Ajusta el valor según sea necesario para el tamaño de la letra */
     border-radius: 5px; /* Ajusta el valor según sea necesario para redondear las esquinas */
     padding: 5px; /* Ajusta el relleno según sea necesario para dar espacio alrededor del texto */
-}
-
-.my-confirm-button {
-    background-color: #4CAF50; /* Color verde como ejemplo */
-    color: white;
-}
-
-.my-deny-button {
-    background-color: #f44336; /* Color rojo como ejemplo */
-    color: white;
-}
-
-.my-cancel-button {
-    background-color: #808080; /* Color gris como ejemplo */
-    color: white;
-}
-
-
-
-
-/* botón 1 */
-.boton1 {
-    background-color: #269530;
-    color: #fff;
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    margin-top: 32px;
-}
-
-/* botón 2 */
-.boton2 {
-    background-color: #156569;
-    color: #fff;
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-}
-
-/* botón 3 */
-.boton3 {
-    background-color: #699597;
-    color: #fff;
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-}
-
-/* botón 3 */
-
-.boton4 {
-    background-color: #699597;
-    color: #fff;
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-}
-
-/* Estilo para los botones */
-.boton1:hover,
-.boton2:hover,
-.boton3:hover,
-.boton4:hover {
-    background-color: #2980b9;
 }
 
 /* Mapa Estilo */
@@ -907,68 +691,68 @@ button {
 }
 
 
+/* SECCION RESPONSIVE */
+@media screen and (max-width:980px) {
+    nav {
+        display: none;
+    }
 
+    .nav-responsive {
+        display: block;
+    }
 
+    nav.responsive {
+        display: block;
+        position: absolute;
+        right: 0;
+        top: 75px;
+        background-color: #252A2E;
+        width: 180px;
+    }
 
-/* Mapa Revisados */
-#mi_mapa2 {
-    margin: auto;
-    height: 400px;
-    width: 600px;
+    nav.responsive ul {
+        display: block !important;
+    }
+
+    nav.responsive ul li {
+        border-bottom: 1px solid #fff;
+        padding: 10px 0;
+    }
 }
 
-/* Mapa Revisados */
-#mi_mapa3 {
-    margin: auto;
-    height: 400px;
-    width: 600px;
+@media screen and (max-width:700px) {
+    .informacion .fila {
+        display: block;
+    }
+
+    .informacion .fila .col {
+        width: fit-content;
+    }
+    
+    .desplegar_mapa {
+        display: block;
+        width: 100%;
+    }
+
+    .mapas_disponibles .galeria {
+        display: block;
+        width: 100%;
+    }
+
+    .mapas_disponibles .galeria .proyecto {
+        max-width: 100%;
+    }
+
+    .mapas_disponibles .galeria .proyecto img {
+        width: 100%;
+    }
+
+    .descargar .fila {
+        display: block;
+    }
+
+    .descargar .fila .col {
+        width: 100%;
+    }
 }
 
-/* Mapa Revisados */
-#mi_mapa4 {
-    margin: auto;
-    height: 400px;
-    width: 600px;
-}
-
-/* Mapa Revisados */
-#mi_mapa5 {
-    margin: auto;
-    height: 400px;
-    width: 600px;
-}
-
-/* Mapa Revisados */
-#mi_mapa6 {
-    margin: auto;
-    height: 400px;
-    width: 600px;
-}
-
-/* Mapa Revisados */
-#mi_mapa7 {
-    margin: auto;
-    height: 400px;
-    width: 600px;
-}
-
-/* Mapa Revisados */
-#mi_mapa8 {
-    margin: auto;
-    height: 400px;
-    width: 600px;
-}
-
-/* Mapa Revisados */
-#mi_mapa9 {
-    margin: auto;
-    height: 400px;
-    width: 600px;
-}
-
-/* Mapa Revisados */
-#mi_mapa10 {
-    margin: auto;
-    height: 500px;
-    width: 1000px;
-}

@@ -1,4 +1,4 @@
-//1. Se inicializa el mapa escogiendo coordenadas y nivel de zoom (15), mientras más sea el número más zoom se le da 
+// Se inicializa el mapa escogiendo coordenadas y nivel de zoom, mientras mayor sea el número más zoom se le da 
 
 let map = L.map('mapa_general', {
     zoomControl: false, // Desactiva el control de zoom predeterminado
@@ -13,7 +13,7 @@ L.control.zoom({
 map.addLayer(drawnItems);
 
 
-//2.Se crea capa para mostrar el mapa
+// Se crea capa para mostrar el mapa
 
 var tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -55,8 +55,8 @@ geocoder.on('markgeocode', function (event) {
 // Crear un control de geolocalización con opciones personalizadas
 var locateControl = L.control.locate({
     position: 'topright', // Posición del control
-    drawMarker: true, // No dibujar el marcador al encontrar la ubicación
-    showPopup: true, // No mostrar un mensaje emergente cuando se encuentra la ubicación
+    drawMarker: true, // dibujar el marcador al encontrar la ubicación
+    showPopup: true, // mostrar un mensaje emergente cuando se encuentra la ubicación
     locateOptions: {
         enableHighAccuracy: true, // Mejor precisión, si está disponible
     },
@@ -482,7 +482,7 @@ function agregarPuntoRutaGeoJSON(latlng, nombre, descripcion, iconoUrl, esInicio
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Tu código JavaScript aquí
+    
     document.getElementById('botonVerInformacion').addEventListener('click', verificarPuntosAgregados);
 });
 
@@ -797,12 +797,6 @@ function actualizarMarcador(marcador, puntoGeoJSON) {
             iconSize: [40, 40],
         }));
 
-        // Actualizar las imágenes asociadas al marcador
-        // Puedes agregar aquí la lógica para manejar las imágenes según tus necesidades
-        // Por ejemplo, puedes actualizar una galería de imágenes en el popup del marcador.
-
-        // Si necesitas procesar las imágenes de alguna manera, puedes hacerlo aquí.
-        // Para este ejemplo, se abrirá un modal con las imágenes ampliadas al hacer clic en el marcador.
 
     } else {
         console.error("El puntoGeoJSON o sus propiedades son indefinidos.", puntoGeoJSON);
@@ -1027,10 +1021,6 @@ function descargarGeoJSON() {
     var geoJSONContenido = JSON.stringify(geojsonData);
     descargarArchivo(geoJSONContenido, 'mapa_personalizado.json');
 
-    // Vuelve a agregar los puntos desde el GeoJSON actualizado
-    /*geojsonData.features.forEach(function (feature) {
-        agregarPuntoGeoJSON(feature);
-    });*/
 }
 
 // Función para descargar el GeoJSON actualizado

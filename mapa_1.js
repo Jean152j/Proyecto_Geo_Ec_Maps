@@ -1,4 +1,4 @@
-//1. Se inicializa el mapa escogiendo coordenadas y nivel de zoom (15), mientras más sea el número más zoom se le da 
+//Se inicializa el mapa escogiendo coordenadas y nivel de zoom, mientras mayoor sea el número más zoom se le da 
 
 let map = L.map('mapa_general', {
     zoomControl: false, // Desactiva el control de zoom predeterminado
@@ -13,7 +13,7 @@ L.control.zoom({
 map.addLayer(drawnItems);
 
 
-//2.Se crea capa para mostrar el mapa
+// Se crea capa para mostrar el mapa
 
 var tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -37,7 +37,7 @@ mapStyleSelect.addEventListener('change', function () {
         // Actualiza la capa del mapa
         cambiarLayerMapa(selectedStyle);
     }
-    // Agrega más casos según tus capas
+   
 });
 
 // Configurar el geocodificador de Nominatim
@@ -55,8 +55,8 @@ geocoder.on('markgeocode', function (event) {
 // Crear un control de geolocalización con opciones personalizadas
 var locateControl = L.control.locate({
     position: 'topright', // Posición del control
-    drawMarker: true, // No dibujar el marcador al encontrar la ubicación
-    showPopup: true, // No mostrar un mensaje emergente cuando se encuentra la ubicación
+    drawMarker: true, // dibujar el marcador al encontrar la ubicación
+    showPopup: true, // mostrar un mensaje emergente cuando se encuentra la ubicación
     locateOptions: {
         enableHighAccuracy: true, // Mejor precisión, si está disponible
     },
@@ -314,7 +314,7 @@ function agregarPuntoGeoJSON(latlng, nombre, descripcion, iconoUrl, imagenes, ma
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Tu código JavaScript aquí
+    
     document.getElementById('botonVerInformacion').addEventListener('click', verificarPuntosAgregados);
 });
 
@@ -446,9 +446,6 @@ function abrirModalAmpliarImagen(fotoUrl) {
     });
 }
 
-
-
-// Define un icono por defecto para puntos de ruta
 
 
 function editarMarcadorPunto(marcador) {
@@ -628,13 +625,6 @@ function actualizarMarcador(marcador, puntoGeoJSON) {
             iconUrl: iconoUrl,
             iconSize: [40, 40],
         }));
-
-        // Actualizar las imágenes asociadas al marcador
-        // Puedes agregar aquí la lógica para manejar las imágenes según tus necesidades
-        // Por ejemplo, puedes actualizar una galería de imágenes en el popup del marcador.
-
-        // Si necesitas procesar las imágenes de alguna manera, puedes hacerlo aquí.
-        // Para este ejemplo, se abrirá un modal con las imágenes ampliadas al hacer clic en el marcador.
 
     } else {
         console.error("El puntoGeoJSON o sus propiedades son indefinidos.", puntoGeoJSON);
@@ -1081,13 +1071,13 @@ function obtenerCoordenadas(figuraLayer) {
 
 function obtenerTipoGeometry(figuraLayer) {
     // Implementa lógica para obtener el tipo de geometry según el tipo de figura
-    // Ajusta según sea necesario.
+   
     if (figuraLayer instanceof L.Polyline) {
         return "LineString";
     } else if (figuraLayer instanceof L.Polygon) {
         return "Polygon";
     } else if (figuraLayer instanceof L.Rectangle) {
-        return "Polygon"; // Cambia a "Rectangle" si lo prefieres
+        return "Polygon"; 
     } else {
         // Manejar caso cuando el tipo de figura no es reconocido
         return "desconocido";
@@ -1129,11 +1119,6 @@ function eliminarFigura(figuraLayer) {
 }
 
 function eliminarFiguraGeoJSON(figuraLayer) {
-    // Verificar si figuraLayer es null o undefined
-    /*if (!figuraLayer || !figuraLayer.feature || !figuraLayer.feature.properties) {
-        console.error('Objeto figuraLayer no válido:', figuraLayer);
-        return;
-    }*/
 
     // Verificar si la capa tiene un nombre en sus propiedades
     const nombreFigura = figuraLayer.options.nombre;
@@ -1180,10 +1165,6 @@ function descargarGeoJSON() {
     var geoJSONContenido = JSON.stringify(geojsonData);
     descargarArchivo(geoJSONContenido, 'mapa_personalizado.json');
 
-    // Vuelve a agregar los puntos desde el GeoJSON actualizado
-    /*geojsonData.features.forEach(function (feature) {
-        agregarPuntoGeoJSON(feature);
-    });*/
 }
 
 // Función para descargar el GeoJSON actualizado
@@ -1303,7 +1284,6 @@ function cargarEstadoInicial() {
     // Agrega las capas de puntos al mapa nuevamente
     todosLosPuntos.addTo(map);
    
-    // Puedes realizar otras acciones según tus necesidades
 }
 
 
@@ -1360,10 +1340,10 @@ function procesarGeoJSON(contenidoArchivo) {
             } else if (feature.geometry.type === 'LineString' || feature.geometry.type === 'Polygon') {
                 agregarPolilineaOPolygonAlMapa(feature);
             } 
-            // Puedes agregar más bloques para otros tipos de figuras (Rectangle, Marker, etc.)
+            
         } catch (error) {
             console.error('Error al procesar feature:', error.message);
-            // Agrega el manejo de errores específico según tu caso
+           
         }
     });
 
@@ -1520,7 +1500,7 @@ function agregarPolilineaOPolygonAlMapa(feature) {
                     var polyline = L.polyline(validCoords, {
                         color: feature.properties.colorBorde || 'red',
                         weight: feature.properties.anchoBorde || 3,
-                        // ... (otras propiedades)
+                        
                     }).addTo(todasLasFiguras);
 
                     // Puedes agregar eventos u otras configuraciones específicas para polilíneas
@@ -1531,10 +1511,9 @@ function agregarPolilineaOPolygonAlMapa(feature) {
                         color: feature.properties.colorBorde || 'blue',
                         fillColor: feature.properties.colorRelleno || 'lightblue',
                         weight: feature.properties.anchoBorde || 3,
-                        // ... (otras propiedades)
+                       
                     }).addTo(todasLasFiguras);
 
-                    // Puedes agregar eventos u otras configuraciones específicas para polígonos
                 }
 
             } catch (error) {
