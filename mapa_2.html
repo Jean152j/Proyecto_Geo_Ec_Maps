@@ -1,81 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapa 2</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+        integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="shortcut icon" href="img/logopeque.jpg">
     <!-- 1. Archivo CSS de Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-    crossorigin=""/>
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.7/dist/sweetalert2.min.css">
-    <link rel="stylesheet" href="/include/fontawesome/css/fontawesome.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
-    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.heat/dist/leaflet-heat.css" />
+    <link rel="stylesheet" href="https://unpkg.com/geojson2heat@0.3.1/dist/geojson2heat.css" />
+    <!-- En el encabezado del HTML -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <!-- Cargar el script del controlador de geocodificación de Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <!-- CDN de Leaflet.locatecontrol -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
 
     <!-- 4. Agregar Archivo CSS  -->
     <link rel="stylesheet" type="text/css" href="estilos.css">
+    <title>Mapa Puntos y Rutas</title>
+    <script language="JavaScript" type="text/javascript">
 
-    
-    
+        var bPreguntar = true;
+
+        window.onbeforeunload = preguntarAntesDeSalir;
+
+        function preguntarAntesDeSalir() {
+            if (bPreguntar)
+                return "¿Seguro que quieres salir?";
+        }
+    </script>
+
 </head>
+
 <body>
-    <!-- 3. Div Mapa -->
-    <h1>Mapa Generación de Rutas</h1>
-    <div id="mi_mapa10"></div>
-    <div>
-        <label for="mapStyle">Estilo del mapa:</label>
-        <select id="mapStyle">
-          <option value="estandar">Estándar</option>
-          <option value="satelite">Satélite</option>
-          <option value="transporte">Transporte</option>
-          <option value="ciclista">Ciclista</option>
-          <option value="humanitario">Humanitario</option>
-        </select>
+    <!-- MENU ENCABEZADO -->
+    <div class="contenedor-header">
+        <header>
+            <nav id="nav">
+                <li>
+                    <a href="index.html">
+                        <button>
+                            <i class="fa-solid fa-arrow-left"></i> Regresar a la Página Principal
+                        </button>
+                    </a>
+                </li>
+            </nav>
+            <a> <img src="img/logo1.jpg" width="100%" height="70" /></a>
+
+            <div class="nav-responsive" onclick="mostrarOcultarMenu()">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </header>
     </div>
-    <button id="descargar-geojson">Descargar GeoJSON</button>
 
-    <button onclick="calcularRuta()">Calcular Ruta</button>
+    <!-- SECCION INFORMACION -->
+    <section id="informacion" class="informacion">
+        <div class="contenido-seccion">
+            <br><br><br>
+            <h2>Mapa Puntos y Rutas</h2>
+            <br>
+            <p> En este Mapa puede trabajar con estas funcionalidades, puede cargar un mapa desde un archivo GeoJson
+                generado, descargar los avances en un archivo GeoJson,
+                puede agregar puntos, agregar puntos para generar una ruta, calcular rutas, limpiar las rutas generadas
+                para calcular nuevas rutas,
+                visualizar la información de cada punto ingresado y limpiar el mapa para trabajar en una nueva creación.
+            </p>
+        </div>
+
+    </section>
+    <section id="desplegar_mapa" class="desplegar_mapa">
+        <div class="contenido-seccion">
+            <button id="cargarArchivoBtn">Cargar Archivo</button>
+
+            <button id="descargarJson" onclick="descargarGeoJSON()">Descargar JSON</button>
+
+            <button id="calcularRutaBtn" onclick="calcularRuta()">Calcular Ruta</button>
+
+            <button id="limpiarRutaBtn">Limpiar Ruta</button>
+
+            <button id="botonVerInformacion">Ver Información de Puntos</button>
+
+            <button id="boton-limpiar-mapa">Limpiar Mapa</button>
+            <br><br>
+            <div class="contenedor-mapa">
+                <div id="mapa_general"></div>
+            </div>
+
+            <br>
+            <div>
+                <label for="mapStyle" class="desplegar_mapa1">Estilo del mapa:</label>
+                <select id="mapStyle">
+                    <option value="estandar">Estándar</option>
+                    <option value="satelite">Satélite</option>
+                    <option value="transporte">Transporte</option>
+                    <option value="ciclista">Ciclista</option>
+                </select>
+            </div>
+
+            <br><br><br>
+            <div id="infoPunto"></div>
+            <div id="imagenesPunto"></div>
+
+            <div id="infoDiv"></div>
+            <br><br><br>
+        </div>
+    </section>
 
 
 
-    
-   <!--  <div>
-        <p>Haz clic en el mapa para seleccionar dos puntos:</p>
-        <p>Punto 1: Latitud: <span id="lat1"></span>, Longitud: <span id="lon1"></span></p>
-        <p>Punto 2: Latitud: <span id="lat2"></span>, Longitud: <span id="lon2"></span></p>
-    </div> 
-    
-    
-    
+    <!-- footer -->
+    <footer>
+        <a href="#informacion" class="arriba">
+            <i class="fa-solid fa-angles-up"></i>
+        </a>
+    </footer>
 
-        Formulario para ingresar ubicación 
-    <form id="ubicacionForm">
-        <label for="latitud">Latitud:</label>
-        <input type="text" id="latitud" name="latitud" required><br>
-        <label for="longitud">Longitud:</label>
-        <input type="text" id="longitud" name="longitud" required><br>
-        <a href="mapas_revisados.html"><button type="submit">Ir a Ubicación</button></a>
-    </form> -->
-    
+    <script src="script.js"></script>
 
     <!-- 2. Archivo JavaScript -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""></script>
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.7/dist/sweetalert2.min.js"></script>
     <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
     <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/i18n/es.js"></script>
     <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
-    
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.7.5/proj4.js"></script>
+    <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+    <script src="https://unpkg.com/geojson2heat@0.3.1/dist/geojson2heat.js"></script>
+    <!-- Antes de cerrar el cuerpo del HTML -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script src="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.js"></script>
 
     <!-- 5. Agregar Archivo JavaScript -->
-    <script src="mapas_parametros.js"></script>
-   
+    <script src="mapa_2.js"></script>
 
-    
+
+
 </body>
+
 </html>

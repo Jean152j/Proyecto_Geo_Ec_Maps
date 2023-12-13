@@ -1,6 +1,6 @@
 //1. Se inicializa el mapa escogiendo coordenadas y nivel de zoom (15), mientras más sea el número más zoom se le da 
 
-let map = L.map('mi_mapa10', {
+let map = L.map('mapa_general', {
     zoomControl: false, // Desactiva el control de zoom predeterminado
 }).setView([-1.009, -78.497], 6);
 var drawnItems = new L.FeatureGroup().addTo(map);
@@ -17,7 +17,7 @@ map.addLayer(drawnItems);
 
 var tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">"Se Puede insertar nombre de organizacion"</a>' //Atribución del mapa puede colocarse lo que necesite
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>' //Atribución del mapa puede colocarse lo que necesite
 }).addTo(map);
 
 // Escucha el cambio en el estilo del mapa
@@ -209,6 +209,7 @@ function mostrarDialogo(latlng) {
 
     } else {
         Swal.fire({
+            denyButtonColor: '#1D8348',
             title: 'Selecciona una opción',
             showCancelButton: true,
             confirmButtonText: 'Agregar Punto',
@@ -238,9 +239,9 @@ function mostrarFormularioAgregarPunto(latlng) {
             '<label for="descripcion">Descripción:</label><input type="text" id="descripcion" class="swal2-input">' +
             '<label for="icono">Seleccione un Icono:</label>' +
             '<select id="icono" class="swal2-select">' +
-            opcionesIconos +
-            '</select>' +
-            '<label for="fotos">Subir Fotos (seleccione múltiples):</label>' +
+            opcionesIconos + 
+            '</select>' + '<br>' +
+            '<label for="fotos">Subir Fotos (opcional):</label>' +
             '<input type="file" id="fotos" class="swal2-input" multiple>',
         showCancelButton: true,
         confirmButtonText: 'Agregar',
@@ -253,7 +254,7 @@ function mostrarFormularioAgregarPunto(latlng) {
             var fotos = fotosInput.files;
 
             if (!nombre || !descripcion || !iconoSeleccionado) {
-                Swal.showValidationMessage('Por favor, complete todos los campos antes de agregar el punto.');
+                Swal.showValidationMessage('Por favor, complete el Nombre y la Descripción antes de agregar el punto.');
                 return false;
             }
 
@@ -292,7 +293,7 @@ function mostrarFormularioAgregarPuntoRuta(latlng) {
         title: 'Agregar Punto para Ruta',
         html: '<label for="nombre">Nombre del Punto:</label><input type="text" id="nombre" class="swal2-input">' +
             '<label for="descripcion">Descripción:</label><input type="text" id="descripcion" class="swal2-input">' +
-            '<label for="esInicio">Punto de Inicio</label><input type="checkbox" id="esInicio" class="swal2-checkbox" ' + (startPoint ? 'disabled' : '') + '>' +
+            '<label for="esInicio">Punto de Inicio</label><input type="checkbox" id="esInicio" class="swal2-checkbox" ' + (startPoint ? 'disabled' : '') + '>' +  '<br>' +
             '<label for="esDestino">Punto de Destino</label><input type="checkbox" id="esDestino" class="swal2-checkbox" ' + (endPoint ? 'disabled' : '') + '>',
         showCancelButton: true,
         confirmButtonText: 'Agregar',
@@ -304,7 +305,7 @@ function mostrarFormularioAgregarPuntoRuta(latlng) {
             var esDestino = document.getElementById('esDestino').checked;
 
             if (!nombre || !descripcion || !esInicio && !esDestino) {
-                Swal.showValidationMessage('Por favor, complete los campos de Nombre y Descripción.');
+                Swal.showValidationMessage('Por favor, complete el Nombre, la Descripción y Selecciona una casilla.');
                 return false;
             }
 
@@ -357,12 +358,12 @@ function mostrarFormularioAgregarPuntoRuta(latlng) {
                 draggable: false,
             });
 
-            marcador.bindPopup(`<b> Nombre: ${nombre} <br> Descripción: ${descripcion}`).openPopup();
+            marcador.bindPopup(`<b> ${nombre} <br> ${descripcion}`).openPopup();
             marcador.addTo(puntos);
 
             // Agregar evento para editar el marcador
             marcador.on('click', function () {
-                editarYEliminarMarcador(marcador);
+                editarMarcadorRuta(marcador);
             });
 
             // Antes de llamar a agregarPuntoGeoJSON
@@ -508,13 +509,14 @@ function generateUniqueId() {
 function mostrarInformacionDePuntos() {
     // Obtén el div donde mostrarás la información
     var infoDiv = document.getElementById('infoDiv');
-
+    
     // Crea una tabla HTML
     var table = document.createElement('table');
+    table.id = 'miTabla'; // Asigna un id a la tabla
     table.border = '1';
     table.style.textAlign = 'center';
     table.style.margin = 'auto'; // Establece márgenes automáticos
-    table.style.width = '60%'; // Ajusta el ancho según tus necesidades
+    table.style.width = '100%'; // Ajusta el ancho según tus necesidades
 
     // Crea la fila de encabezado
     var headerRow = table.insertRow(0);
@@ -587,6 +589,9 @@ function mostrarInformacionDePuntos() {
 
     // Agrega la tabla al div
     infoDiv.appendChild(table);
+
+    // Desplaza el infoDiv a la vista
+    infoDiv.scrollIntoView({ behavior: 'smooth' });
 }
 
 
@@ -658,9 +663,9 @@ function editarMarcadorPunto(marcador) {
             '<label for="icono">Seleccione un Icono:</label>' +
             '<select id="icono" class="swal2-select">' +
             opcionesIconos +
-            '</select>' +
-            '<label>Imágenes Actuales:</label>' +
-            imagenesActualesDiv.outerHTML +
+            '</select>' +  '<br>' +
+            '<label>Imágenes Actuales:</label>' +  '<br>' +
+            imagenesActualesDiv.outerHTML + '<br>' +
             '<label for="nuevas-imagenes">Nuevas Imágenes:</label><input type="file" id="nuevas-imagenes" multiple accept="image/*">',
         showCancelButton: true,
         confirmButtonText: 'Guardar',
@@ -809,8 +814,8 @@ function actualizarMarcador(marcador, puntoGeoJSON) {
 function editarMarcadorPuntoRuta(marcador) {
     Swal.fire({
         title: 'Editar Punto Ruta',
-        html: '<label for="nombre"></label><input type="text" id="nombre" class="swal2-input"  placeholder="Nombre" value="' + marcador.getPopup().getContent().split('<br>')[0].replace('<b>', '') + '">' +
-            '<label for="descripcion"></label><input type="text" id="descripcion" class="swal2-input" value="' + marcador.getPopup().getContent().split('<br>')[1] + '">',
+        html: '<label for="nombre"> Nombre </label><input type="text" id="nombre" class="swal2-input" value="' + marcador.getPopup().getContent().split('<br>')[0].replace('<b>', '') + '">' +
+            '<label for="descripcion"> Descripción </label><input type="text" id="descripcion" class="swal2-input" value="' + marcador.getPopup().getContent().split('<br>')[1] + '">',
         showCancelButton: true,
         showCancelButton: true,
         confirmButtonText: 'Guardar',
@@ -827,6 +832,11 @@ function editarMarcadorPuntoRuta(marcador) {
 
             // Al mostrar el contenido inicial
             marcador.setPopupContent(`<b>${nombre}<br>${descripcion}`);
+
+            // Actualizar el GeoJSON
+            actualizarPuntoRutaGeoJSON(marcador, nombre, descripcion);
+
+            Swal.fire('Éxito', 'Punto Actualizado Correctamente. ', 'success');
 
         },
     });
@@ -849,6 +859,20 @@ function actualizarPuntoGeoJSON(marcador, nombre, descripcion, iconoUrl) {
 
 }
 
+function actualizarPuntoRutaGeoJSON(marcador, nombre, descripcion) {
+    // Encuentra el punto correspondiente en el GeoJSON
+    var puntoGeoJSON = geojsonData.features.find(function (feature) {
+        // Compara las coordenadas para identificar el punto
+        return (
+            feature.geometry.coordinates[0] === marcador.getLatLng().lng &&
+            feature.geometry.coordinates[1] === marcador.getLatLng().lat
+        );
+    });
+
+    // Actualiza las propiedades del GeoJSON con los nuevos valores
+    puntoGeoJSON.properties.nombre = nombre;
+    puntoGeoJSON.properties.descripcion = descripcion;
+}
 function editarYEliminarMarcador(marcador) {
     Swal.fire({
         title: 'Opciones del Punto',
@@ -866,6 +890,18 @@ function editarYEliminarMarcador(marcador) {
     });
 }
 
+function editarMarcadorRuta(marcador) {
+    Swal.fire({
+        title: 'Opciones del Punto',
+        showCancelButton: true,
+        confirmButtonText: 'Editar',
+        cancelButtonText: 'Cancelar',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            editarMarcadorPuntoRuta(marcador);
+        } 
+    });
+}
 function eliminarMarcador(marcador) {
     Swal.fire({
         title: 'Eliminar Punto',
@@ -953,7 +989,7 @@ function calcularRuta() {
     if (!puntosInicio.length || !puntosDestino.length) {
         Swal.fire({
             icon: 'warning',
-            title: 'Selecciona Puntos Inicio o Destino',
+            title: 'Selecciona Puntos Inicio y Destino',
             text: 'Debes seleccionar al menos un punto de inicio y un punto de destino antes de calcular la ruta.',
         });
         return;
@@ -1356,7 +1392,7 @@ function eliminarFigura(figuraLayer) {
             // Elimina el punto del GeoJSON
             eliminarFiguraGeoJSON(figuraLayer);
 
-            Swal.fire('Figura eliminado', '', 'success');
+            Swal.fire('Figura eliminada', '', 'success');
         }
     });
 }
@@ -1515,7 +1551,7 @@ function limpiarMapa() {
     Swal.fire({
         icon: 'success',
         title: 'Mapa limpiado',
-        text: 'Los puntos, rutas y figuras han sido eliminados del mapa y del archivo GeoJSON.'
+        text: 'Los puntos, rutas y figuras han sido limpiados del mapa y se descargó el GeoJSON.'
     });
 }
 
@@ -1602,7 +1638,7 @@ document.getElementById('limpiarRutaBtn').addEventListener('click', function () 
 function mostrarDialogoLimpiarRuta() {
     // Verificar si hay rutas
     if (rutas.length === 0) {
-        mostrarMensaje('No se ha generado una ruta. Agrega puntos de inicio y destino antes de limpiar.');
+        mostrarMensaje('No se ha generado una ruta. Calcula una ruta antes de limpiar.');
         return;
     }
 
@@ -1644,8 +1680,8 @@ function limpiarRuta() {
 
         Swal.fire({
             icon: 'success',
-            title: 'Ruta eliminada correctamente',
-            text: 'La ruta y los puntos de inicio y destino han sido eliminados.'
+            title: 'Ruta limpiada correctamente',
+            text: 'La ruta ha sido limpiada.'
         });
     } else {
         Swal.fire({
@@ -1777,7 +1813,7 @@ document.getElementById('fileInput').addEventListener('change', function () {
                 Swal.fire({
                     icon: 'success',
                     title: 'Archivo cargado con éxito',
-                    text: 'El archivo se ha cargado y actualizado en el mapa.',
+                    text: 'El archivo se ha cargado y se ha actualizado el mapa.',
                 });
                 // Actualizar la información de la tabla de puntos
                 mostrarInformacionDePuntos();
@@ -1929,8 +1965,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function mostrarInstruccionesAgregarZonaCaliente() {
         Swal.fire({
-            title: 'Instrucciones para Zona Caliente',
-            text: 'Haz clic en el mapa para definir la posición de la zona caliente.',
+            title: 'Instrucciones para Zona de Calor',
+            text: 'Haz clic en el mapa para definir la posición de la zona de calor.',
             confirmButtonText: 'Ok',
             allowOutsideClick: false
         }).then(() => {
@@ -1942,7 +1978,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     function mostrarDialogoAgregarZonaCaliente(latlng) {
         Swal.fire({
-            title: 'Agregar Zona Caliente',
+            title: 'Agregar Zona De Calor',
             html:
                 '<input id="nombre" class="swal2-input" placeholder="Nombre de la zona">' +
                 '<input id="descripcion" class="swal2-input" placeholder="Descripción de la zona">' +
@@ -1960,7 +1996,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const intensidad = Swal.getPopup().querySelector('#intensidad').value;
 
                 if (!nombre || !descripcion || !intensidad) {
-                    Swal.showValidationMessage('Por favor, complete todos los campos.');
+                    Swal.showValidationMessage('Por favor, complete los campos de Nombre y Descripción de la zona.');
                 }
 
                 return { nombre, descripcion, intensidad: parseFloat(intensidad) };
@@ -1968,7 +2004,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }).then((result) => {
             if (result.isConfirmed) {
                 agregarZonaCaliente(latlng, result.value.nombre, result.value.descripcion, result.value.intensidad);
-                Swal.fire('Éxito', 'Zona caliente agregada correctamente.', 'success');
+                Swal.fire('Éxito', 'Zona de Calor agregada correctamente.', 'success');
             }
         });
     }
