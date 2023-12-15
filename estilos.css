@@ -146,12 +146,13 @@ span {
 }
 
 
-.contenedor-img {
-
-    width: 647px;
-    height: 436px;
-
+.contenedor-img img.img-responsive {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: auto;
 }
+
 
 .informacion {
     background-color: #09334b;
@@ -247,6 +248,30 @@ span {
     font-size: 30px;
     margin-bottom: 10px;
 }
+
+.contenedor-tecnologias {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.tecnologias {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.tecnologias i,
+.tecnologias h4 {
+    display: block;
+}
+
+/* Estilos adicionales para hacer más responsivo según sea necesario */
+@media screen and (max-width: 768px) {
+    .contenedor-tecnologias {
+        justify-content: center;
+    }
+}
+
 
 .informacion button {
     cursor: pointer;
