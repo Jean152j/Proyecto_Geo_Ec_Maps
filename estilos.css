@@ -594,7 +594,7 @@ footer .arriba {
 button {
     padding: 7px 7px; /* Ajusta el espacio interno del botón */
     margin: 5px; /* Añade un margen entre los botones */
-    font-size: 13px; /* Tamaño de la fuente del botón */
+    font-size: 12px; /* Tamaño de la fuente del botón */
     border: none; /* Elimina el borde del botón */
     cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
     border-radius: 10px; /* Hace que las esquinas del botón sean redondas */
