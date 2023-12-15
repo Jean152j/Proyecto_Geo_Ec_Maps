@@ -15,13 +15,3 @@ function seleccionar(){
     document.getElementById("nav").classList = "";
     menuVisible = false;
 }
-
-function descargarZIP() {
-    // Obtener el enlace de descarga
-    var enlaceDescarga = document.getElementById('enlace-descarga');
-
-    // Simular un clic en el enlace para iniciar la descarga
-    if (enlaceDescarga) {
-        enlaceDescarga.click();
-    }
-}
