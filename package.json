@@ -1,0 +1,12 @@
+{
+  "name": "avances_programa",
+  "version": "1.0.0",
+  "description": "<p align=\"center\">\r   <img src=\"https://github.com/Jean152j/Proyecto_Geo_Ec_Maps/assets/74079643/5ec24754-b191-43a0-a530-5ef4e2be91e2\" alt=\"logo2\">\r </p>\r <p align=\"justify\"> <h3>🎉😁✔️ Para poder utilizar este proyecto solamente debe clonar el repositorio a su computador y abrirlo correctamente. No Necesita instalar dependencias adicionales.🎉😁✔️ </h3></p>\r <p align=\"justify\"> Geo-EC-Maps, nace de la necesidad de brindarle a la comunidad ecuatoriana una alternativa de software libre que les permita realizar la configuración de mapas que pueden ser implementados dentro de diferentes e-commerce 🖥️💵💵 de forma gratuita. Una de las principales características de este proyecto es que al ser de código abierto el usuario tiene la oportunidad de descargar el mapa en el cual ha trabajado y colocarlo de manera libre en su negocio digital 🤖.\r Dentro de la plataforma de Geolocalización 🌎 propuesta existen varios mapas en los que el usuario puede trabajar para la generación de mapas. Los mismos son: \r </p>",
+  "main": "ecuador.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
