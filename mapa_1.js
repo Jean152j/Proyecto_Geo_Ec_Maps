@@ -1301,10 +1301,6 @@ var todosLosPuntos = new L.FeatureGroup();
 var todasLasFiguras = L.layerGroup();
 var capasExistentes = [];
 
-var geojsonData = {
-    features: []
-};
-
 document.getElementById('cargarArchivoBtn').addEventListener('click', function () {
     // Simular un clic en el elemento de entrada de archivos
     document.getElementById('fileInput').click();

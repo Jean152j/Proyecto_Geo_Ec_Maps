@@ -1275,9 +1275,6 @@ var todasLasFiguras = L.layerGroup();
 var capasExistentes = [];
 var puntosCalientes = [];
 var heatLayer;
-var geojsonData = {
-    features: []
-};
 
 document.getElementById('cargarArchivoBtn').addEventListener('click', function () {
     // Simular un clic en el elemento de entrada de archivos
