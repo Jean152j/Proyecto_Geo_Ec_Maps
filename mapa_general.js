@@ -76,7 +76,7 @@ navigator.geolocation.getCurrentPosition(
         var userLng = position.coords.longitude;
 
         // Inicializar el mapa con las coordenadas del usuario y nivel de zoom
-        map.setView([userLat, userLng], 6);
+        map.setView([userLat, userLng], 17);
 
 
     },
