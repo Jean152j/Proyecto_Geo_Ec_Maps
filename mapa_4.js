@@ -257,7 +257,7 @@ function mostrarFormularioAgregarPunto(latlng) {
             '<label for="descripcion">Descripción:</label><input type="text" id="descripcion" class="swal2-input">' +
             '<label for="icono">Seleccione un Icono:</label>' +
             '<select id="icono" class="swal2-select">' +
-            opcionesIconos + 
+            opcionesIconos +
             '</select>' + '<br>' +
             '<label for="fotos">Subir Fotos (opcional):</label>' +
             '<input type="file" id="fotos" class="swal2-input" multiple>',
@@ -311,7 +311,7 @@ function mostrarFormularioAgregarPuntoRuta(latlng) {
         title: 'Agregar Punto para Ruta',
         html: '<label for="nombre">Nombre del Punto:</label><input type="text" id="nombre" class="swal2-input">' +
             '<label for="descripcion">Descripción:</label><input type="text" id="descripcion" class="swal2-input">' +
-            '<label for="esInicio">Punto de Inicio</label><input type="checkbox" id="esInicio" class="swal2-checkbox" ' + (startPoint ? 'disabled' : '') + '>' +  '<br>' +
+            '<label for="esInicio">Punto de Inicio</label><input type="checkbox" id="esInicio" class="swal2-checkbox" ' + (startPoint ? 'disabled' : '') + '>' + '<br>' +
             '<label for="esDestino">Punto de Destino</label><input type="checkbox" id="esDestino" class="swal2-checkbox" ' + (endPoint ? 'disabled' : '') + '>',
         showCancelButton: true,
         confirmButtonText: 'Agregar',
@@ -443,8 +443,8 @@ map.on('zoomend', function () {
 });
 
 function agregarPuntoGeoJSON(latlng, nombre, descripcion, iconoUrl, imagenes, marcador) {
-     // Obtener el nivel de zoom actual del mapa
-     var zoom = map.getZoom();
+    // Obtener el nivel de zoom actual del mapa
+    var zoom = map.getZoom();
     // Verificar si la información del punto es válida
     if (latlng && nombre && descripcion) {
         puntoFeature = {
@@ -524,7 +524,7 @@ function agregarPuntoRutaGeoJSON(latlng, nombre, descripcion, iconoUrl, esInicio
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    
+
     document.getElementById('botonVerInformacion').addEventListener('click', verificarPuntosAgregados);
 });
 
@@ -551,7 +551,7 @@ function generateUniqueId() {
 function mostrarInformacionDePuntos() {
     // Obtén el div donde mostrarás la información
     var infoDiv = document.getElementById('infoDiv');
-    
+
     // Crea una tabla HTML
     var table = document.createElement('table');
     table.id = 'miTabla'; // Asigna un id a la tabla
@@ -705,8 +705,8 @@ function editarMarcadorPunto(marcador) {
             '<label for="icono">Seleccione un Icono:</label>' +
             '<select id="icono" class="swal2-select">' +
             opcionesIconos +
-            '</select>' +  '<br>' +
-            '<label>Imágenes Actuales:</label>' +  '<br>' +
+            '</select>' + '<br>' +
+            '<label>Imágenes Actuales:</label>' + '<br>' +
             imagenesActualesDiv.outerHTML + '<br>' +
             '<label for="nuevas-imagenes">Nuevas Imágenes:</label><input type="file" id="nuevas-imagenes" multiple accept="image/*">',
         showCancelButton: true,
@@ -935,7 +935,7 @@ function editarMarcadorRuta(marcador) {
     }).then((result) => {
         if (result.isConfirmed) {
             editarMarcadorPuntoRuta(marcador);
-        } 
+        }
     });
 }
 function eliminarMarcador(marcador) {
@@ -1335,6 +1335,9 @@ function procesarGeoJSON(contenidoArchivo) {
         throw new Error("Error al parsear el JSON del archivo: " + error.message);
     }
 
+    // Obtener el nivel de zoom del primer punto en el GeoJSON
+    var zoomDelPrimerPunto = obtenerZoomDelPrimerPunto(nuevoGeoJSON);
+
     // Limpiar todos los puntos existentes
     todosLosPuntos.clearLayers();
     todasLasFiguras.clearLayers();
@@ -1344,6 +1347,9 @@ function procesarGeoJSON(contenidoArchivo) {
     if (nuevoGeoJSON.features.length > 0 && nuevoGeoJSON.features[0].properties && nuevoGeoJSON.features[0].properties.layer) {
         cambiarLayerMapa(nuevoGeoJSON.features[0].properties.layer);
     }
+    // Variables para el centrado del mapa
+    var centerLatLng;
+    var isFirstGeometry = true;
 
     // Iterar sobre los features en el nuevo GeoJSON y agregar puntos, zonas calientes y otras figuras al mapa
     nuevoGeoJSON.features.forEach(function (feature) {
@@ -1351,16 +1357,29 @@ function procesarGeoJSON(contenidoArchivo) {
             // Verificar y procesar las coordenadas según el tipo de geometría
             if (feature.geometry.type === 'Point') {
                 agregarPuntoAlMapa(feature);
-            }  else if (feature.geometry.type === 'Circle') {
+            } else if (feature.geometry.type === 'Circle') {
                 agregarPuntoCalienteGeoJSON();
             }
             // Puedes agregar más bloques para otros tipos de figuras (Rectangle, Marker, etc.)
+            // Obtener las coordenadas de la geometría para centrar el mapa
+            if (isFirstGeometry) {
+                centerLatLng = obtenerCentroDeGeometria(feature.geometry);
+                isFirstGeometry = false;
+            }
         } catch (error) {
             console.error('Error al procesar feature:', error.message);
             // Agrega el manejo de errores específico según tu caso
         }
     });
+    // Establecer el zoom del mapa al nivel del primer punto del GeoJSON
+    if (zoomDelPrimerPunto) {
+        map.setZoom(zoomDelPrimerPunto);
+    }
 
+    // Centrar el mapa en las coordenadas de la primera geometría
+    if (centerLatLng) {
+        map.setView(centerLatLng, map.getZoom()); // Ajustar solo la vista sin cambiar el zoom
+    }
     // Agregar todos los puntos y zonas calientes al mapa
     map.addLayer(todosLosPuntos);
     map.addLayer(todasLasFiguras);
@@ -1387,6 +1406,14 @@ function procesarGeoJSON(contenidoArchivo) {
             geojsonData.features.push(nuevaFeature);
         }
     });
+}
+
+// Función para obtener el nivel de zoom del primer punto en el GeoJSON
+function obtenerZoomDelPrimerPunto(geojson) {
+    if (geojson.features && geojson.features.length > 0) {
+        return geojson.features[0].properties && geojson.features[0].properties.zoom;
+    }
+    return null;
 }
 
 // Función para verificar si una feature ya existe

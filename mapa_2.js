@@ -485,8 +485,8 @@ function agregarPuntoGeoJSON(latlng, nombre, descripcion, iconoUrl, imagenes, ma
 }
 
 function agregarPuntoRutaGeoJSON(latlng, nombre, descripcion, iconoUrl, esInicio, esDestino) {
-     // Obtener el nivel de zoom actual del mapa
-     var zoom = map.getZoom();
+    // Obtener el nivel de zoom actual del mapa
+    var zoom = map.getZoom();
     // Verificar si la información del punto es válida
     if (latlng && nombre && descripcion) {
         puntoFeature = {
@@ -520,7 +520,7 @@ function agregarPuntoRutaGeoJSON(latlng, nombre, descripcion, iconoUrl, esInicio
 
 
 document.addEventListener('DOMContentLoaded', function () {
-   
+
     document.getElementById('botonVerInformacion').addEventListener('click', verificarPuntosAgregados);
 });
 
@@ -1324,6 +1324,9 @@ function procesarGeoJSON(contenidoArchivo) {
         throw new Error("Error al parsear el JSON del archivo: " + error.message);
     }
 
+    // Obtener el nivel de zoom del primer punto en el GeoJSON
+    var zoomDelPrimerPunto = obtenerZoomDelPrimerPunto(nuevoGeoJSON);
+
     // Limpiar todos los puntos existentes
     todosLosPuntos.clearLayers();
 
@@ -1332,23 +1335,43 @@ function procesarGeoJSON(contenidoArchivo) {
         cambiarLayerMapa(nuevoGeoJSON.features[0].properties.layer);
     }
 
+    // Variables para el centrado del mapa
+    var centerLatLng;
+    var isFirstGeometry = true;
+
     // Iterar sobre los features en el nuevo GeoJSON y agregar puntos
     nuevoGeoJSON.features.forEach(function (feature) {
         try {
             // Verificar y procesar las coordenadas según el tipo de geometría
             if (feature.geometry.type === 'Point') {
                 agregarPuntoAlMapa(feature);
-            } 
+            }
             // Puedes agregar más bloques para otros tipos de figuras (Rectangle, Marker, etc.)
+            // Obtener las coordenadas de la geometría para centrar el mapa
+            if (isFirstGeometry) {
+                centerLatLng = obtenerCentroDeGeometria(feature.geometry);
+                isFirstGeometry = false;
+            }
         } catch (error) {
             console.error('Error al procesar feature:', error.message);
             // Agrega el manejo de errores específico según tu caso
         }
     });
 
+    // Establecer el zoom del mapa al nivel del primer punto del GeoJSON
+    if (zoomDelPrimerPunto) {
+        map.setZoom(zoomDelPrimerPunto);
+    }
+
+    // Centrar el mapa en las coordenadas de la primera geometría
+    if (centerLatLng) {
+        map.setView(centerLatLng, map.getZoom()); // Ajustar solo la vista sin cambiar el zoom
+    }
+
+
     // Agregar todos los puntos al mapa 
     map.addLayer(todosLosPuntos);
-   
+
     // Puedes también recalcular las rutas si es necesario
     calcularRuta();
 
@@ -1358,6 +1381,14 @@ function procesarGeoJSON(contenidoArchivo) {
             geojsonData.features.push(nuevaFeature);
         }
     });
+}
+
+// Función para obtener el nivel de zoom del primer punto en el GeoJSON
+function obtenerZoomDelPrimerPunto(geojson) {
+    if (geojson.features && geojson.features.length > 0) {
+        return geojson.features[0].properties && geojson.features[0].properties.zoom;
+    }
+    return null;
 }
 
 // Función para verificar si una feature ya existe

@@ -217,7 +217,7 @@ function mostrarDialogo(latlng) {
     }).then((result) => {
         if (result.isConfirmed) {
             mostrarFormularioAgregarPunto(latlng);
-        } 
+        }
     });
 }
 
@@ -306,8 +306,8 @@ map.on('zoomend', function () {
 });
 
 function agregarPuntoGeoJSON(latlng, nombre, descripcion, iconoUrl, imagenes, marcador) {
-     // Obtener el nivel de zoom actual del mapa
-     var zoom = map.getZoom();
+    // Obtener el nivel de zoom actual del mapa
+    var zoom = map.getZoom();
     // Verificar si la información del punto es válida
     if (latlng && nombre && descripcion) {
         puntoFeature = {
@@ -353,7 +353,7 @@ function agregarPuntoGeoJSON(latlng, nombre, descripcion, iconoUrl, imagenes, ma
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    
+
     document.getElementById('botonVerInformacion').addEventListener('click', verificarPuntosAgregados);
 });
 
@@ -1114,13 +1114,13 @@ function obtenerCoordenadas(figuraLayer) {
 
 function obtenerTipoGeometry(figuraLayer) {
     // Implementa lógica para obtener el tipo de geometry según el tipo de figura
-   
+
     if (figuraLayer instanceof L.Polyline) {
         return "LineString";
     } else if (figuraLayer instanceof L.Polygon) {
         return "Polygon";
     } else if (figuraLayer instanceof L.Rectangle) {
-        return "Polygon"; 
+        return "Polygon";
     } else {
         // Manejar caso cuando el tipo de figura no es reconocido
         return "desconocido";
@@ -1326,7 +1326,7 @@ function cargarEstadoInicial() {
 
     // Agrega las capas de puntos al mapa nuevamente
     todosLosPuntos.addTo(map);
-   
+
 }
 
 
@@ -1361,6 +1361,9 @@ function procesarGeoJSON(contenidoArchivo) {
         throw new Error("Error al parsear el JSON del archivo: " + error.message);
     }
 
+    // Obtener el nivel de zoom del primer punto en el GeoJSON
+    var zoomDelPrimerPunto = obtenerZoomDelPrimerPunto(nuevoGeoJSON);
+
     // Limpiar todos los puntos existentes
     todosLosPuntos.clearLayers();
     todasLasFiguras.clearLayers();
@@ -1370,6 +1373,11 @@ function procesarGeoJSON(contenidoArchivo) {
         cambiarLayerMapa(nuevoGeoJSON.features[0].properties.layer);
     }
 
+    // Variables para el centrado del mapa
+    var centerLatLng;
+    var isFirstGeometry = true;
+
+
     // Iterar sobre los features en el nuevo GeoJSON y agregar puntos y otras figuras al mapa
     nuevoGeoJSON.features.forEach(function (feature) {
         try {
@@ -1378,13 +1386,27 @@ function procesarGeoJSON(contenidoArchivo) {
                 agregarPuntoAlMapa(feature);
             } else if (feature.geometry.type === 'LineString' || feature.geometry.type === 'Polygon') {
                 agregarPolilineaOPolygonAlMapa(feature);
-            } 
-            
+            }
+            // Obtener las coordenadas de la geometría para centrar el mapa
+            if (isFirstGeometry) {
+                centerLatLng = obtenerCentroDeGeometria(feature.geometry);
+                isFirstGeometry = false;
+            }
         } catch (error) {
             console.error('Error al procesar feature:', error.message);
-           
+
         }
     });
+
+    // Establecer el zoom del mapa al nivel del primer punto del GeoJSON
+    if (zoomDelPrimerPunto) {
+        map.setZoom(zoomDelPrimerPunto);
+    }
+
+    // Centrar el mapa en las coordenadas de la primera geometría
+    if (centerLatLng) {
+        map.setView(centerLatLng, map.getZoom()); // Ajustar solo la vista sin cambiar el zoom
+    }
 
     // Agregar todos los puntos  calientes al mapa
     map.addLayer(todosLosPuntos);
@@ -1396,6 +1418,14 @@ function procesarGeoJSON(contenidoArchivo) {
             geojsonData.features.push(nuevaFeature);
         }
     });
+}
+
+// Función para obtener el nivel de zoom del primer punto en el GeoJSON
+function obtenerZoomDelPrimerPunto(geojson) {
+    if (geojson.features && geojson.features.length > 0) {
+        return geojson.features[0].properties && geojson.features[0].properties.zoom;
+    }
+    return null;
 }
 
 // Función para verificar si una feature ya existe
@@ -1539,7 +1569,7 @@ function agregarPolilineaOPolygonAlMapa(feature) {
                     var polyline = L.polyline(validCoords, {
                         color: feature.properties.colorBorde || 'red',
                         weight: feature.properties.anchoBorde || 3,
-                        
+
                     }).addTo(todasLasFiguras);
 
                     // Puedes agregar eventos u otras configuraciones específicas para polilíneas
@@ -1550,7 +1580,7 @@ function agregarPolilineaOPolygonAlMapa(feature) {
                         color: feature.properties.colorBorde || 'blue',
                         fillColor: feature.properties.colorRelleno || 'lightblue',
                         weight: feature.properties.anchoBorde || 3,
-                       
+
                     }).addTo(todasLasFiguras);
 
                 }
