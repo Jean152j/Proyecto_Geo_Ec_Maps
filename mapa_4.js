@@ -1,8 +1,9 @@
-// Se inicializa el mapa escogiendo coordenadas y nivel de zoom, mientras mayor sea el número más zoom se le da 
+
+//Se inicializa el mapa escogiendo coordenadas y nivel de zoom, mientras mayor sea el número más zoom se le da 
 
 let map = L.map('mapa_general', {
     zoomControl: false, // Desactiva el control de zoom predeterminado
-}).setView([-1.009, -78.497], 6);
+});
 var drawnItems = new L.FeatureGroup().addTo(map);
 var drawControl;
 var dibujando = false; // Variable para rastrear si se está dibujando
@@ -12,9 +13,7 @@ L.control.zoom({
 }).addTo(map);
 map.addLayer(drawnItems);
 
-
 // Se crea capa para mostrar el mapa
-
 var tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>' //Atribución del mapa puede colocarse lo que necesite
@@ -68,6 +67,25 @@ var locateControl = L.control.locate({
 
 // Personalizar la posición del control (si prefieres ajustarlo después de haberlo creado)
 locateControl.setPosition('topright');
+
+
+// Obtener las coordenadas del usuario
+navigator.geolocation.getCurrentPosition(
+    function (position) {
+        var userLat = position.coords.latitude;
+        var userLng = position.coords.longitude;
+
+        // Inicializar el mapa con las coordenadas del usuario y nivel de zoom
+        map.setView([userLat, userLng], 17);
+
+
+    },
+    function (error) {
+        // En caso de error, puedes manejarlo aquí
+        console.error('Error al obtener la ubicación del usuario:', error);
+
+    }
+);
 
 
 var puntos = L.layerGroup().addTo(map);
@@ -405,8 +423,28 @@ function desactivarAgregarPuntosRuta() {
 var puntoFeature;  // Declarar puntoFeature en un alcance más amplio
 var puntosAgregados = [];  // Array para almacenar los puntos
 
+// Escuchar el evento de cambio de zoom del mapa
+map.on('zoomend', function () {
+    // Obtener el nuevo nivel de zoom
+    var newZoom = map.getZoom();
+
+    // Actualizar el nivel de zoom en cada punto
+    if (geojsonData.features) {
+        geojsonData.features.forEach(function (feature) {
+            if (feature.properties) {
+                feature.properties.zoom = newZoom;
+            }
+        });
+    }
+
+    // Puedes convertir a cadena JSON y guardar donde sea necesario
+    var geoJsonString = JSON.stringify(geojsonData);
+    console.log(geoJsonString);
+});
 
 function agregarPuntoGeoJSON(latlng, nombre, descripcion, iconoUrl, imagenes, marcador) {
+     // Obtener el nivel de zoom actual del mapa
+     var zoom = map.getZoom();
     // Verificar si la información del punto es válida
     if (latlng && nombre && descripcion) {
         puntoFeature = {
@@ -418,6 +456,7 @@ function agregarPuntoGeoJSON(latlng, nombre, descripcion, iconoUrl, imagenes, ma
                 "iconoUrl": iconoUrl,
                 "layer": mapaLayer,  // Utiliza el estilo actual del mapa como layer
                 "fotos": [],
+                "zoom": zoom  // Nuevo: Agregar el nivel de zoom
             },
             "geometry": {
                 "coordinates": [latlng.lng, latlng.lat],
@@ -450,6 +489,8 @@ function agregarPuntoGeoJSON(latlng, nombre, descripcion, iconoUrl, imagenes, ma
 }
 
 function agregarPuntoRutaGeoJSON(latlng, nombre, descripcion, iconoUrl, esInicio, esDestino) {
+    // Obtener el nivel de zoom actual del mapa
+    var zoom = map.getZoom();
     // Verificar si la información del punto es válida
     if (latlng && nombre && descripcion) {
         puntoFeature = {
@@ -460,7 +501,8 @@ function agregarPuntoRutaGeoJSON(latlng, nombre, descripcion, iconoUrl, esInicio
                 "iconoUrl": iconoUrl,
                 "esInicio": esInicio,
                 "esDestino": esDestino,
-                "layer": mapaLayer  // Utiliza el estilo actual del mapa como layer
+                "layer": mapaLayer,  // Utiliza el estilo actual del mapa como layer
+                "zoom": zoom  // Nuevo: Agregar el nivel de zoom
             },
             "geometry": {
                 "coordinates": [latlng.lng, latlng.lat],
@@ -1504,6 +1546,8 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function agregarPuntoCalienteGeoJSON(latlng, nombre, descripcion, intensidad) {
+    // Obtener el nivel de zoom actual del mapa
+    var zoom = map.getZoom();
     // Verificar si la información del punto es válida
     if (latlng && nombre && descripcion) {
         var puntoFeature = {
@@ -1511,7 +1555,8 @@ function agregarPuntoCalienteGeoJSON(latlng, nombre, descripcion, intensidad) {
             "properties": {
                 "nombre": nombre,
                 "descripcion": descripcion,
-                "intensidad": intensidad
+                "intensidad": intensidad,
+                "zoom": zoom  // Nuevo: Agregar el nivel de zoom
             },
             "geometry": {
                 "coordinates": [latlng.lng, latlng.lat],
